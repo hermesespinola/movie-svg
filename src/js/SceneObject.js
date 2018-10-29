@@ -184,7 +184,7 @@ class SceneObject {
             case 'scale':
                 this.animations.push(new MaterialAnimation(this, propName, 'vec3', opts))
             default:
-                this.animations.push(new MaterialAnimation(this.material.uniforms, propName, 'vec3', opts))
+                this.animations.push(new MaterialAnimation(this.material.uniforms[propName], 'value', this.material.uniforms[propName].type, opts))
                 break
         }
     }

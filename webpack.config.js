@@ -1,5 +1,6 @@
 const path = require('path')
 const webpack = require('webpack')
+const Dotenv = require('dotenv-webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 const ROOT_PATH = path.resolve(__dirname)
@@ -8,7 +9,7 @@ const SRC_PATH = path.resolve(ROOT_PATH, 'src')
 const JS_PATH = path.resolve(ROOT_PATH, 'src/js')
 const CSS_PATH = path.resolve(ROOT_PATH, 'src/css')
 const TEMPLATE_PATH = path.resolve(ROOT_PATH, 'src/index.html')
-const BUILD_PATH = path.resolve(ROOT_PATH, 'dist')
+const BUILD_PATH = path.resolve(ROOT_PATH, 'public')
 
 const debug = process.env.NODE_ENV !== 'production'
 
@@ -24,20 +25,23 @@ module.exports = {
       template: TEMPLATE_PATH,
       cache: true,
     }),
-    new webpack.DefinePlugin({
-      __DEV__: debug,
+    new webpack.LoaderOptionsPlugin({
+      debug,
     }),
+    new Dotenv(),
   ],
   resolve: {
-    root: [JS_PATH, CSS_PATH, SRC_PATH],
+    modules: [JS_PATH, CSS_PATH, SRC_PATH, 'node_modules/'],
+    descriptionFiles: ['package.json'],
+    extensions : ['.js'],
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.js$/,
         include: JS_PATH,
         exclude: /(node_modules|bower_components)/,
-        loader: 'babel',
+        loader: 'babel-loader',
         query: {
           cacheDirectory: true,
           presets: ['es2015']
@@ -45,7 +49,7 @@ module.exports = {
       },
       {
         test: /\.glsl$/,
-        loader: 'webpack-glsl'
+        loader: 'webpack-glsl-loader'
       },
       {
         test: /\.css$/,
@@ -57,6 +61,5 @@ module.exports = {
       },
     ],
   },
-  debug: debug,
   devtool: debug ? 'eval-source-map' : 'source-map',
 }
