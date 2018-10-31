@@ -183,6 +183,7 @@ class SceneObject {
                 break
             case 'scale':
                 this.animations.push(new MaterialAnimation(this, propName, 'vec3', opts))
+                break
             default:
                 this.animations.push(new MaterialAnimation(this.material.uniforms[propName], 'value', this.material.uniforms[propName].type, opts))
                 break
@@ -198,7 +199,6 @@ class SceneObject {
         while (i >= 0) {
             const animation = this.animations[i]
             animation.update(dt)
-            console.log(this.material.color)
             if (animation.isComplete) {
                 this.animations.splice(i, 1)
             }

@@ -1,6 +1,6 @@
 import fragmentShader from './shaders/idle_frag.glsl'
 import vertexShader from './shaders/idle_vert.glsl'
-import { centroid, randomFloat, flatten } from '../lib/utils'
+import { centroid, randomFloat } from '../lib/utils'
 import { vec3 } from 'gl-matrix'
 import SceneObject from '../SceneObject';
 
@@ -42,9 +42,9 @@ class Icon extends SceneObject {
                     type: 'float',
                     value: 2.0,
                 },
-                scale: {
+                triangleScale: {
                     type: 'float',
-                    value: 0.90,
+                    value: 1.0,
                 }
             },
         }

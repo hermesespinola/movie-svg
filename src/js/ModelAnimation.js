@@ -42,8 +42,8 @@ class ModelAnimation {
                     throw new TypeError('target value and obj[propName] must be the same type')
                 }
                 this.init = () => {
-                    // The movement for each component
                     this.originalValue = obj[propName]
+                    // The movement for each component
                     this.deltaMovement = opts.target.map((t, i) => t - obj[propName][i])
                 }
                 this.anim = (fract) => {
@@ -56,8 +56,8 @@ class ModelAnimation {
                     throw new TypeError('target value and obj[propName] must be the same type')
                 }
                 this.init = () => {
-                    // movement every animation unit
                     this.originalValue = obj[propName]
+                    // movement every animation unit
                     this.deltaMovement = opts.target - obj[propName]
                 }
                 this.anim = (fract) => {

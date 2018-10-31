@@ -74,7 +74,9 @@ function fileChange() {
         const path = extract(svg)
 
         // create mesh object
-        const mesh = reindex(unindex(svgMesh(path, { scale: 10, simplify: 0.1 })))
+        let mesh = svgMesh(path, { scale: 10, simplify: 0.1 })
+        const triangles = unindex(mesh)
+        mesh = reindex(triangles)
         if (icon) {
             scene.remove(objectID)
         }
@@ -104,39 +106,4 @@ document.getElementById('material-type').addEventListener('change', ({ target: {
     if (icon) {
         icon.material.type = SceneObject.type[value]
     }
-})
-
-addAnimationListeners = (id, type) => {
-    document.getElementById(`target-${id}`).addEventListener('change', ({ target: { value } }) =>  {
-
-    })
-    document.getElementById(`ease-${id}`).addEventListener('change', ({ target: { value } }) =>  {
-
-    })
-    document.getElementById(`animate-on-${id}`).addEventListener('change', ({ target: { value } }) =>  {
-
-    })
-}
-
-document.getElementById('add-animation-color').addEventListener('click', () => {
-    const [id, newControls] = createAnimationControls('color')
-    document.getElementById('animation-editor-controls').appendChild(newControls)
-    addAnimationListeners(id, 'color')
-})
-
-document.getElementById('add-animation-transform').addEventListener('click', () => {
-    const [id, newControls] = createAnimationControls('transform')
-    document.getElementById('animation-editor-controls').appendChild(newControls)
-    addAnimationListeners(id, 'transform')
-})
-
-document.getElementById('add-animation-scale').addEventListener('click', () => {
-    const [id, newControls] = createAnimationControls('scale')
-    document.getElementById('animation-editor-controls').appendChild(newControls)
-    addAnimationListeners(id, 'scale')
-})
-
-document.getElementById('add-animation-rotation').addEventListener('click', () => {
-    const newControls = createAnimationControls('rotation')
-    addAnimationListeners(id, 'rotation')
 })

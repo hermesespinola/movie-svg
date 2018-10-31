@@ -67,12 +67,6 @@ export const centroid = ([p1, p2, p3]) => p1.map((t0, i) => {
  * @param {number[]} out
  */
 export const unindex = ({ positions, cells }, out) => {
-    if (positions.positions && positions.cells) {
-        out = cells
-        cells = positions.cells
-        positions = positions.positions
-    }
-
     var dims = positions.length ? positions[0].length : 0
     var points = cells.length ? cells[0].length : 0
 
@@ -150,10 +144,10 @@ return { positions, cells }
 
 export const flatten = (array, innerLength) => {
     const flattened = new Float32Array(array.length * innerLength)
-    array.forEach((inner, i) => {
+    array.forEach((innerArray, i) => {
         const idx = i * innerLength
         for (let j = 0; j < innerLength; j++) {
-            flattened[idx + j] = inner[j]
+            flattened[idx + j] = innerArray[j]
         }
     })
     return flattened

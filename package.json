@@ -6,7 +6,7 @@
     "build": "NODE_ENV=production webpack -p --progress --colors --config build/webpack.prod.config.js",
     "watch": "webpack --progress --colors --watch",
     "start": "node src/server/server.js",
-    "dev": "webpack --config build/webpack.dev.config.js && nodemon src/server/server.js"
+    "dev": "webpack --config build/webpack.dev.config.js && node src/server/server.js"
   },
   "author": "Hermes Espínola <hermes.espinola@gmail.com>",
   "license": "CC-BY-4.0",
