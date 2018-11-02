@@ -170,24 +170,30 @@ class SceneObject {
      * @param {object} opts animation options
      */
     addAnimation(propName, opts) {
+        let animation = null
         switch(propName) {
             case 'color':
-                this.animations.push(new MaterialAnimation(this.material, propName, 'vec3', opts))
+                animation = new MaterialAnimation(this.material, propName, 'vec3', opts)
+                this.animations.push(animation)
                 break
             case 'translation':
-                this.animations.push(new MaterialAnimation(this, propName, 'vec3', opts))
-                prop = { type: 'vec3', value: this.translation }
+                animation = new MaterialAnimation(this, propName, 'vec3', opts)
+                this.animations.push(animation)
                 break
             case 'rotation':
-                this.animations.push(new MaterialAnimation(this, propName, 'vec3', opts))
+                animation = new MaterialAnimation(this, propName, 'vec3', opts)
+                this.animations.push(animation)
                 break
             case 'scale':
-                this.animations.push(new MaterialAnimation(this, propName, 'vec3', opts))
+                animation = new MaterialAnimation(this, propName, 'vec3', opts)
+                this.animations.push(animation)
                 break
             default:
-                this.animations.push(new MaterialAnimation(this.material.uniforms[propName], 'value', this.material.uniforms[propName].type, opts))
+                animation = new MaterialAnimation(this.material.uniforms[propName], 'value', this.material.uniforms[propName].type, opts)
+                this.animations.push(animation)
                 break
         }
+        return animation
     }
 
     /**

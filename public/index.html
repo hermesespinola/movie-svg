@@ -1,46 +1,18 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>WebGL App</title>
-		<style>
-			html, body {
-				padding: 0;
-				margin: 0;
-				background-color: turquoise;
-			}
-			.main, .controls {
-				display: inline-block;
-				vertical-align: top;
-			}
-			#animation-editor-controls > * {
-				display: block;
-			}
-		</style>
-    </head>
-    <body>
-		<div class="main">
-			<div id="canvas-container"></div>
-			<br><br>
-			<input type="file" id="load-svg" accept="image/svg+xml"/>
-			<input type="color" id="from-color" value="#ffffff" />
-			<select name="material-type" id="material-type">
-				<option value="TRIANGLES">Triangles</option>
-				<option value="LINESTRIP">Line strip</option>
-				<option value="LINES">Lines</option>
-				<option value="SOLID">Solid</option>
-				<option value="WIREFRAME">Wireframe</option>
-			</select>
-		</div>
-		<div class="controls" id="controls">
-			<div class="animation-editor">
-					<div id="animation-editor-controls"></div>
-			</div>
-			<button id="add-animation-color">Add color animation</button>
-			<button id="add-animation-transform">Add transform animation</button>
-			<button id="add-animation-scale">Add scale animation</button>
-			<button id="add-animation-rotation">Add rotation animation</button>
-		</div>
-	<script type="text/javascript" src="bundle.js"></script></body>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="theme-color" content="#000000">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+    <link rel="shortcut icon" href="/icon.svg"/>
+    <title>MovieSVG</title>
+  </head>
+  <body>
+    <noscript>
+      You need to enable JavaScript to run this app.
+    </noscript>
+    <div id="root"></div>
+    <script src="/bundle.js"></script>
+  </body>
 </html>

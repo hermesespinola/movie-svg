@@ -77,10 +77,12 @@ class Scene {
 	 * Add a SceneObject to the Scene and re-render
 	 * @param {string} name name of the object in the scene
 	 * @param {SceneObject} sceneObject object to add
+	 * @returns {Scene} this scene
 	 */
 	add(name, sceneObject) {
 		sceneObject.init(this.gl, this)
 		this.sceneObjects.set(name, sceneObject)
+		return this
 	}
 
 	/**

@@ -1,0 +1,21 @@
+{
+    "parser": "babel-eslint",
+    "extends": "airbnb",
+    "plugins": [
+      "react"
+    ],
+    "rules": {
+      "max-len": [1, 120, 2, {"ignoreComments": true}],
+      "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+      "jsx-a11y/anchor-is-valid": [ "error", { "components": [ "Link" ], "specialLink": [ "to" ] } ],
+      "jsx-a11y/no-noninteractive-element-interactions": "off",
+      "react/prop-types": 0,
+      "semi": "off",
+      "import/no-extraneous-dependencies": [2, { "devDependencies": true }],
+      "no-console":"off",
+      "no-plusplus":"off"
+    },
+    "env": {
+      "browser": true
+    }
+  }

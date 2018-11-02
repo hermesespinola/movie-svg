@@ -1,9 +1,8 @@
 const dotenv = require('dotenv');
 const dotenvExpand = require('dotenv-expand');
-const axios = require('axios');
-
 dotenvExpand(dotenv.config());
 
+const axios = require('axios');
 const express = require('express');
 const webpack = require('webpack');
 const bodyParser = require('body-parser');
@@ -13,7 +12,7 @@ const middleware = require('webpack-dev-middleware');
 const path = require('path');
 const cors = require('cors');
 
-const webpackOptions = require('../../build/webpack.dev.config');
+const webpackOptions = require('../build/webpack.dev.config');
 const compiler = webpack(webpackOptions);
 
 const app = express();
@@ -54,7 +53,8 @@ app.use(middleware(compiler));
 app.use(express.static(path.join(__dirname, '../public')));
 
 // serve static application if loggedin
-app.get('*', (req, res) => {
+app.get('/', (req, res) => {
+    console.log(__dirname)
     res.sendFile(path.resolve(__dirname, '../public', 'index.html'));
 });
 
