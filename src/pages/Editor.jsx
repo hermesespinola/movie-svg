@@ -2,12 +2,12 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import svgMesh from 'svg-mesh-3d'
 import { parse as extract } from 'extract-svg-path'
-import Icon from './js/Icon'
-import IconPreview from './components/IconPreview'
-import InitialIconProps from './components/InitialIconProps'
-import ModelAnimationControls from './components/ModelAnimationControls'
-import Scene from './js/Scene'
-import { unindex, reindex } from './js/lib/utils'
+import Icon from '../js/Icon'
+import IconPreview from '../components/IconPreview'
+import InitialIconProps from '../components/InitialIconProps'
+import ModelAnimationControls from '../components/ModelAnimationControls'
+import Scene from '../js/Scene'
+import { unindex, reindex } from '../js/lib/utils'
 
 class App extends Component {
     constructor(props) {
