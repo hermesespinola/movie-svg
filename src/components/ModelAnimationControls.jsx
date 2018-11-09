@@ -44,6 +44,7 @@ class ModelAnimationControls extends PureComponent {
                 <div className="animation-editor">
                     {this.props.animations.map(animControl)}
                 </div>
+                <hr/>
             </div>
         )
     }

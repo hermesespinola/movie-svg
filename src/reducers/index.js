@@ -1,4 +1,4 @@
-import { ADD_ANIMATION, REMOVE_ANIMATION, UPDATE_ANIMATION } from '../constants/actionTypes'
+import { ADD_ANIMATION, REMOVE_ANIMATION, UPDATE_ANIMATION, UPDATE_SHADER_ANIMATION, CHANGE_SHADER_ANIMATION } from '../constants/actionTypes'
 import { combineReducers } from 'redux'
 
 const animations = (state = [], action) => {
@@ -18,4 +18,14 @@ const animations = (state = [], action) => {
     }
 }
 
-export default combineReducers({ animations })
+const shaderAnimation = (state={}, action) => {
+    switch (action.type) {
+        case CHANGE_SHADER_ANIMATION:
+        case UPDATE_SHADER_ANIMATION:
+            return action.shaderAnimation
+        default:
+            return state
+    }
+}
+
+export default combineReducers({ animations, shaderAnimation })

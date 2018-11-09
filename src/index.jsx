@@ -5,7 +5,7 @@ import { BrowserRouter, Route } from 'react-router-dom'
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 import { devToolsEnhancer } from 'redux-devtools-extension'
-import { Security, SecureRoute, ImplicitCallback } from '@okta/okta-react'
+import { Security, ImplicitCallback } from '@okta/okta-react'
 import Editor from './pages/Editor'
 import './css/index.css'
 import reducers from './reducers'
@@ -24,8 +24,8 @@ ReactDOM.render(
           client_id={process.env.OKTA_CLIENT_ID}
           redirect_uri={redirectUri}
         >
-          <SecureRoute path="/" component={Editor} />
-          <Route exact path="/authorization-code/callback" component={ImplicitCallback} />
+          <Route exact path={process.env.CALLBACK_PATH} component={ImplicitCallback} />
+          <Route path="/" component={Editor} />
         </Security>
     </BrowserRouter>
   </Provider>,

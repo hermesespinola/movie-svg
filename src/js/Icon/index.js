@@ -1,55 +1,23 @@
-import fragmentShader from './shaders/idle_frag.glsl'
-import vertexShader from './shaders/idle_vert.glsl'
-import { centroid, randomFloat } from '../lib/utils'
-import { vec3 } from 'gl-matrix'
 import SceneObject from '../SceneObject';
 
-/**
- * Create animation attributes for the icon
- * @param {object} mesh
- */
-const animationAttributes = ({ positions, cells }) => {
-    const directions = []
-    const centroids = []
-    cells.forEach(([i1, i2, i3]) => {
-        const triangle = [positions[i1], positions[i2], positions[i3]]
-        const center = vec3.fromValues(...centroid(triangle))
-        centroids.push(center, center, center)
-        const rand = vec3.fromValues(randomFloat(), randomFloat(), randomFloat())
-        directions.push(rand, rand, rand)
-    })
-    return {
-        // direction: {
-        //     type: 'vec3',
-        //     value: directions,
-        // },
-        centroid: {
-            type: 'vec3',
-            value: centroids,
-        },
-    }
-}
-
 class Icon extends SceneObject {
-    constructor(mesh, color = [1., 1., 1.]) {
+    constructor(mesh, animationShader) {
+        const { animationAttributes, uniforms, vertexShader, fragmentShader } = animationShader;
         const attributes = animationAttributes(mesh)
         const mat = {
             type: SceneObject.type.TRIANGLES,
-            color,
+            color: [1.0, 1.0, 1.0],
             attributes,
-            uniforms: {
-                pointSize: {
-                    type: 'float',
-                    value: 2.0,
-                },
-                triangleScale: {
-                    type: 'float',
-                    value: 1.0,
-                }
-            },
+            uniforms,
         }
 
         super(vertexShader, fragmentShader, mesh.positions, mat)
+    }
+
+    swapShader(animationShader) {
+        const { animationAttributes, uniforms, vertexShader, fragmentShader } = animationShader;
+        const attributes = animationAttributes(mesh)
+        [this.material.attributes, this.material.uniforms] = [attributes, uniforms]
     }
 }
 

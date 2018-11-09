@@ -1,7 +1,6 @@
 @import ../../../shaders/vert_base;
 // centroid of this point's triangle
 attribute vec3 centroid;
-uniform float pointSize;
 uniform float triangleScale;
 
 #define PI 3.14159265359
@@ -12,5 +11,5 @@ void main(void) {
   vec3 trianglePos = mix(centroid.xyz, position.xyz, triangleScale);
 
   gl_Position = modelViewMatrix * vec4(trianglePos, 1.0);
-  gl_PointSize = pointSize;
+  gl_PointSize = 1.0;
 }
