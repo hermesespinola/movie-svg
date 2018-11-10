@@ -100,20 +100,18 @@ class App extends Component {
     render() {
         const { icon } = this.state
         return (
-            <div>
-                <IconPreview icon={icon} onLoad={this.setScene} />
-                <input type="file" accept="image/svg+xml" onChange={this.loadSvg} />
-                <br/>
-                {
-                    icon && (
-                        <Fragment>
-                            <InitialIconProps icon={icon} />
-                            <ShaderAnimationControls icon={icon} />
-                            <ModelAnimationControls icon={icon} />
-                        </Fragment>
-                    )
-                }
-            </div>
+            [
+                <IconPreview icon={icon} onLoad={this.setScene}>
+                    <input type="file" accept="image/svg+xml" onChange={this.loadSvg} />
+                    <InitialIconProps icon={icon} />
+                </IconPreview>,
+                icon && (
+                    <Fragment>
+                        <ShaderAnimationControls icon={icon} />
+                        <ModelAnimationControls icon={icon} />
+                    </Fragment>
+                ),
+            ]
         )
     }
 }

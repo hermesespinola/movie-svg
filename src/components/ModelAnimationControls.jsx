@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import AnimationModelControl from './AnimationModelControl'
 import { addAnimation } from '../actions'
+import '../css/AnimationControls.css'
 
 const defaultAnimationOpts = target => ({
     target,
