@@ -38,26 +38,29 @@ class Editor extends Component {
             if (this.state.icon) {
                 this.scene.remove('icon')
             }
-            this.setState({ icon: new Icon(mesh, idleAnimation) })
+
+            this.setState({ icon: new Icon(mesh, this.getAnimationShader()) })
             this.scene.add('icon', this.state.icon).start()
+        }
+    }
+
+    getAnimationShader() {
+        switch (this.props.shaderName) {
+            case 'idle':
+                return idleAnimation
+                break
+            case 'anim':
+                return animAnimation
+                break
+            default:
+                return idleAnimation
         }
     }
 
     componentDidUpdate(prevProps) {
         if (prevProps.shaderName !== this.props.shaderName) {
             cleanShaderAnimations()
-            let shader
-            switch (this.props.shaderName) {
-                case 'idle':
-                    shader = idleAnimation
-                    break
-                case 'anim':
-                    shader = animAnimation
-                    break
-                default:
-                    shader = idleAnimation
-            }
-            this.state.icon.swapShader(shader)
+            this.state.icon.swapShader(this.getAnimationShader())
             this.props.updateInitialUniforms({ ...this.state.icon.material.uniforms })
         }
     }
