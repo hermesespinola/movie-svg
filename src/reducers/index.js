@@ -4,7 +4,7 @@ import {
     ADD_ANIMATION, ADD_SHADER_ANIMATION,
     REMOVE_ANIMATION, REMOVE_SHADER_ANIMATION,
     UPDATE_ANIMATION, UPDATE_SHADER_ANIMATION,
-    CLEAN_ANIMATIONS, CLEAN_SHADER_ANIMATIONS, SET_SHADER_NAME,
+    CLEAN_ANIMATIONS, CLEAN_SHADER_ANIMATIONS, SET_SHADER_NAME, SET_INITIAL_ANIMATION_STATE, SET_ANIMATIONS, SET_SHADER_ANIMATIONS,
 } from '../constants/actionTypes'
 import { combineReducers } from 'redux'
 
@@ -27,6 +27,8 @@ const initAnimState = {
 
 const initialAnimationState = (state = initAnimState, action) => {
     switch (action.type) {
+        case SET_INITIAL_ANIMATION_STATE:
+            return action.initState
         case UPDATE_INITIAL_TRANSLATION:
             const { translation } = action
             return { ...state, translation }
@@ -49,6 +51,8 @@ const initialAnimationState = (state = initAnimState, action) => {
 
 const animations = (state = [], action) => {
     switch (action.type) {
+        case SET_ANIMATIONS:
+            return action.animations
         case ADD_ANIMATION:
             const addedAnimations = [...state, action.animation]
             return addedAnimations
@@ -68,6 +72,8 @@ const animations = (state = [], action) => {
 
 const shaderAnimations = (state = [], action) => {
     switch (action.type) {
+        case SET_SHADER_ANIMATIONS:
+            return action.shaderAnimations
         case ADD_SHADER_ANIMATION:
             const addedAnimations = [...state, action.shaderAnimation]
             return addedAnimations

@@ -4,7 +4,7 @@ import {
     ADD_ANIMATION, ADD_SHADER_ANIMATION, SET_SHADER_NAME,
     CLEAN_ANIMATIONS, CLEAN_SHADER_ANIMATIONS,
     REMOVE_ANIMATION, REMOVE_SHADER_ANIMATION,
-    UPDATE_ANIMATION, UPDATE_SHADER_ANIMATION,
+    UPDATE_ANIMATION, UPDATE_SHADER_ANIMATION, SET_ANIMATIONS, SET_SHADER_ANIMATIONS, SET_INITIAL_ANIMATION_STATE,
 } from '../constants/actionTypes'
 
 export const updateInitialTranslation = translation => ({
@@ -75,4 +75,19 @@ export const cleanShaderAnimations = () => ({
 export const setShaderName = shaderName => ({
     type: SET_SHADER_NAME,
     shaderName,
+})
+
+export const setAnimations = animations => ({
+    type: SET_ANIMATIONS,
+    animations,
+})
+
+export const setShaderAnimations = shaderAnimations => ({
+    type: SET_SHADER_ANIMATIONS,
+    shaderAnimations,
+})
+
+export const setInitialAnimationState = initState => ({
+    type: SET_INITIAL_ANIMATION_STATE,
+    initState,
 })

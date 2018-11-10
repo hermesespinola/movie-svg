@@ -11,9 +11,10 @@ import Scene from '../js/Scene'
 import { unindex, reindex } from '../js/lib/utils'
 import ExportButton from '../components/ExportButton'
 import ShaderSelect from '../components/ShaderSelect'
+import LoadState from '../components/LoadState'
 import idleAnimation from '../js/animationShaders/IdleAnimation'
 import animAnimation from '../js/animationShaders/AnimAnimation'
-import { updateInitialUniforms } from '../actions'
+import { updateInitialUniforms, cleanShaderAnimations } from '../actions'
 
 class Editor extends Component {
     constructor(props) {
@@ -42,20 +43,23 @@ class Editor extends Component {
         }
     }
 
-    swapShader = (shaderName) => {
-        let shader
-        switch (shaderName) {
-            case 'idle':
-                shader = idleAnimation
-                break
-            case 'anim':
-                shader = animAnimation
-                break
-            default:
-                shader = idleAnimation
+    componentDidUpdate(prevProps) {
+        if (prevProps.shaderName !== this.props.shaderName) {
+            cleanShaderAnimations()
+            let shader
+            switch (this.props.shaderName) {
+                case 'idle':
+                    shader = idleAnimation
+                    break
+                case 'anim':
+                    shader = animAnimation
+                    break
+                default:
+                    shader = idleAnimation
+            }
+            this.state.icon.swapShader(shader)
+            this.props.updateInitialUniforms({ ...this.state.icon.material.uniforms })
         }
-        this.state.icon.swapShader(shader)
-        this.props.updateInitialUniforms({ ...this.state.icon.material.uniforms })
     }
 
     loadSvg = ({ target: { files } }) => {
@@ -123,9 +127,10 @@ class Editor extends Component {
             <IconPreview key="icon-preview" icon={icon} onLoad={this.setScene}>
                 <input type="file" accept="image/svg+xml" onChange={this.loadSvg} />
                 <br/>
+                <LoadState disabled={icon === null} />
+                <ShaderSelect disabled={icon === null} />
                 <ExportButton />
                 <InitialIconProps icon={icon} />
-                <ShaderSelect disabled={icon === null} onChange={this.swapShader} />
             </IconPreview>,
             icon && (
                 <Fragment key="with-icon">
@@ -140,10 +145,12 @@ class Editor extends Component {
 const mapStateToProps = state => ({
     animations: state.animations,
     shaderAnimations: state.shaderAnimations,
+    shaderName: state.shaderName,
 })
 
 const mapDispatchToProps = dispatch => ({
     updateInitialUniforms: uniforms => dispatch(updateInitialUniforms(uniforms)),
+    cleanShaderAnimations: () => dispatch(cleanShaderAnimations()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Editor)

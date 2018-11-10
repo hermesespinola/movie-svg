@@ -2,15 +2,13 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { setShaderName, cleanShaderAnimations } from '../actions';
 
-const ShaderSelect = ({ disabled, onChange, setShaderName, name, cleanShaderAnimations }) => (
+const ShaderSelect = ({ disabled, setShaderName, name }) => (
     <select
         name="shader-select"
-        defaultValue={name}
+        value={name}
         disabled={disabled}
         onChange={({ target: { value } }) => {
-            cleanShaderAnimations()
             setShaderName(value)
-            onChange(value)
         }}
     >
         <option value="anim">anim</option>
@@ -23,7 +21,6 @@ export const mapStateToProps = state => ({
 })
 
 export const mapDispatchToProps = dispatch => ({
-    cleanShaderAnimations: () => dispatch(cleanShaderAnimations()),
     setShaderName: name => dispatch(setShaderName(name)),
 })
 
