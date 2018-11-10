@@ -9,8 +9,11 @@ import ModelAnimationControls from '../components/ModelAnimationControls'
 import ShaderAnimationControls from '../components/ShaderAnimationControls'
 import Scene from '../js/Scene'
 import { unindex, reindex } from '../js/lib/utils'
+import ExportButton from '../components/ExportButton'
+import ShaderSelect from '../components/ShaderSelect'
 import idleAnimation from '../js/animationShaders/IdleAnimation'
-import ExportButton from '../components/ExportButton';
+import animAnimation from '../js/animationShaders/AnimAnimation'
+import { updateInitialUniforms } from '../actions'
 
 class Editor extends Component {
     constructor(props) {
@@ -37,6 +40,22 @@ class Editor extends Component {
             this.setState({ icon: new Icon(mesh, idleAnimation) })
             this.scene.add('icon', this.state.icon).start()
         }
+    }
+
+    swapShader = (shaderName) => {
+        let shader
+        switch (shaderName) {
+            case 'idle':
+                shader = idleAnimation
+                break
+            case 'anim':
+                shader = animAnimation
+                break
+            default:
+                shader = idleAnimation
+        }
+        this.state.icon.swapShader(shader)
+        this.props.updateInitialUniforms({ ...this.state.icon.material.uniforms })
     }
 
     loadSvg = ({ target: { files } }) => {
@@ -106,6 +125,7 @@ class Editor extends Component {
                 <br/>
                 <ExportButton />
                 <InitialIconProps icon={icon} />
+                <ShaderSelect disabled={icon === null} onChange={this.swapShader} />
             </IconPreview>,
             icon && (
                 <Fragment key="with-icon">
@@ -119,7 +139,11 @@ class Editor extends Component {
 
 const mapStateToProps = state => ({
     animations: state.animations,
-    shaderAnimations: state.shaderAnimations
+    shaderAnimations: state.shaderAnimations,
 })
 
-export default connect(mapStateToProps)(Editor)
+const mapDispatchToProps = dispatch => ({
+    updateInitialUniforms: uniforms => dispatch(updateInitialUniforms(uniforms)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Editor)

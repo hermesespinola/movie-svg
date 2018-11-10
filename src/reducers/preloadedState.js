@@ -9,8 +9,13 @@ export default {
             triangleScale: {
                 type: 'float',
                 value: 1.0,
-            }
+            },
+            opacity: {
+                type: 'float',
+                value: 1.0,
+            },
         },
     },
     shaderAnimations: [],
+    shaderName: 'idle',
 }

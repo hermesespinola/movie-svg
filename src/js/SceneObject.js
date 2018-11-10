@@ -35,7 +35,7 @@ class SceneObject {
     constructor(
         vertexShaderSrc,
         fragmentShaderSrc,
-        geometry,
+        mesh,
         material = defaultMaterial,
     ) {
         this.vertexShaderSrc = vertexShaderSrc
@@ -43,7 +43,7 @@ class SceneObject {
         this.shaderProgram = null
         this.scene = null
         this.gl = null
-        this.geometry = geometry
+        this.mesh = mesh
         this.centroid = [0, 0, 0]
         this.transform = mat4.create()
         this.animations = []
@@ -91,6 +91,17 @@ class SceneObject {
             attribute.location = gl.getAttribLocation(this.shaderProgram, attribName)
             attribute.buffer = gl.createBuffer()
         }
+    }
+
+    swapShader(animationShader) {
+        const { animationAttributes, uniforms, vertexShader, fragmentShader } = animationShader
+        this.remove()
+        this.vertexShaderSrc = vertexShader
+        this.fragShaderSrc = fragmentShader
+        const attributes = animationAttributes(this.mesh)
+        this.material.attributes = attributes
+        this.material.uniforms = uniforms
+        this.init(this.gl, this.scene)
     }
 
     get translation() {
@@ -232,10 +243,10 @@ class SceneObject {
         }
 
         // send position attributes
-        const dims = this.geometry[0].length
+        const dims = this.mesh.positions[0].length
 		this.gl.enableVertexAttribArray(this.aPosition)
 		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.positionBuffer)
-		this.gl.bufferData(this.gl.ARRAY_BUFFER, flatten(this.geometry, dims), this.gl.STATIC_DRAW)
+		this.gl.bufferData(this.gl.ARRAY_BUFFER, flatten(this.mesh.positions, dims), this.gl.STATIC_DRAW)
         this.gl.vertexAttribPointer(this.aPosition, dims, this.gl.FLOAT, false, 0, 0)
 
         // send custom attributes
@@ -252,7 +263,7 @@ class SceneObject {
             }
         }
 
-        this.gl.drawArrays(this.material.type, 0, this.geometry.length)
+        this.gl.drawArrays(this.material.type, 0, this.mesh.positions.length)
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, null)
     }
 

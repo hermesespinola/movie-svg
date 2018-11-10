@@ -11,13 +11,7 @@ class Icon extends SceneObject {
             uniforms,
         }
 
-        super(vertexShader, fragmentShader, mesh.positions, mat)
-    }
-
-    swapShader(animationShader) {
-        const { animationAttributes, uniforms, vertexShader, fragmentShader } = animationShader;
-        const attributes = animationAttributes(mesh)
-        [this.material.attributes, this.material.uniforms] = [attributes, uniforms]
+        super(vertexShader, fragmentShader, mesh, mat)
     }
 }
 

@@ -4,7 +4,7 @@ import {
     ADD_ANIMATION, ADD_SHADER_ANIMATION,
     REMOVE_ANIMATION, REMOVE_SHADER_ANIMATION,
     UPDATE_ANIMATION, UPDATE_SHADER_ANIMATION,
-    CLEAN_ANIMATIONS, CLEAN_SHADER_ANIMATIONS,
+    CLEAN_ANIMATIONS, CLEAN_SHADER_ANIMATIONS, SET_SHADER_NAME,
 } from '../constants/actionTypes'
 import { combineReducers } from 'redux'
 
@@ -17,7 +17,11 @@ const initAnimState = {
         triangleScale: {
             type: 'float',
             value: 1.0,
-        }
+        },
+        opacity: {
+            type: 'float',
+            value: 1.0,
+        },
     },
 }
 
@@ -62,7 +66,7 @@ const animations = (state = [], action) => {
     }
 }
 
-const shaderAnimations = (state=[], action) => {
+const shaderAnimations = (state = [], action) => {
     switch (action.type) {
         case ADD_SHADER_ANIMATION:
             const addedAnimations = [...state, action.shaderAnimation]
@@ -81,4 +85,12 @@ const shaderAnimations = (state=[], action) => {
     }
 }
 
-export default combineReducers({ initialAnimationState, animations, shaderAnimations })
+const shaderName = (state = 'idle', action) => {
+    if (action.type === SET_SHADER_NAME) {
+        return action.shaderName
+    } else {
+        return state
+    }
+}
+
+export default combineReducers({ initialAnimationState, animations, shaderAnimations, shaderName })
