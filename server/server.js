@@ -21,14 +21,13 @@ const apiRouter = require('./routes/api');
 app.use('/api', authenticationRequired, apiRouter);
 
 app.use(middleware(compiler));
-app.use(express.static(path.join(__dirname, '../public')));
 
 // serve static application
-app.get('/', (req, res) => {
-    console.log(__dirname)
-    res.sendFile(path.resolve(__dirname, '../public', 'index.html'));
-});
+app.use(express.static(path.join(__dirname, '../public')));
 
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '../public', 'index.html'));
+});
 
 app.listen(process.env.PORT, () => {
     console.log(`Server listening on port ${process.env.PORT}`);

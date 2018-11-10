@@ -13,6 +13,7 @@ module.exports = {
   entry: './src/index.jsx',
   output: {
     path: BUILD_PATH,
+    publicPath: '/',
     filename: 'bundle.js',
   },
   target: 'web',
@@ -56,6 +57,9 @@ module.exports = {
     ],
   },
   devtool: debug ? 'eval-source-map' : 'source-map',
+  devServer: {
+    historyApiFallback: true,
+  },
   node: {
     fs: 'empty',
   },
