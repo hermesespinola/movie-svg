@@ -1,7 +1,6 @@
-import React, { Fragment, PureComponent } from 'react'
+import React, { PureComponent } from 'react'
 import Vector3Input from './Vector3Input'
 
-// TODO: connect to redux
 class InitialIconProps extends PureComponent {
     constructor(props) {
         super(props)

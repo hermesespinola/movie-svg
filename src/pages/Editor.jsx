@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import svgMesh from 'svg-mesh-3d'
 import { parse as extract } from 'extract-svg-path'
@@ -48,9 +48,13 @@ class App extends Component {
         this.scene = new Scene(canvasRef, [0, 0, 0, 1.], {
             click: () => {
                 const { icon } = this.state
-                const { animations, shaderAnimation } = this.props
+                const { animations, shaderAnimations } = this.props
                 if (icon) {
-                    icon.addAnimation(shaderAnimation.type, shaderAnimation.opts)
+                    shaderAnimations.forEach((shaderAnimation) => {
+                        if (shaderAnimation.trigger === 'click') {
+                            icon.addAnimation(shaderAnimation.type, shaderAnimation.opts)
+                        }
+                    })
                     animations.forEach((anim) => {
                         if (anim.trigger === 'click') {
                             icon.addAnimation(anim.type, anim.opts)
@@ -60,9 +64,13 @@ class App extends Component {
             },
             mouseenter: () => {
                 const { icon } = this.state
-                const { animations, shaderAnimation } = this.props
+                const { animations, shaderAnimations } = this.props
                 if (icon) {
-                    icon.addAnimation(shaderAnimation.type, shaderAnimation.opts)
+                    shaderAnimations.forEach((shaderAnimation) => {
+                        if (shaderAnimation.trigger === 'enter') {
+                            icon.addAnimation(shaderAnimation.type, shaderAnimation.opts)
+                        }
+                    })
                     animations.forEach((anim) => {
                         if (anim.trigger === 'enter') {
                             icon.addAnimation(anim.type, anim.opts)
@@ -72,9 +80,13 @@ class App extends Component {
             },
             mouseleave: () => {
                 const { icon } = this.state
-                const { animations, shaderAnimation } = this.props
+                const { animations, shaderAnimations } = this.props
                 if (icon) {
-                    icon.addAnimation(shaderAnimation.type, shaderAnimation.opts)
+                    shaderAnimations.forEach((shaderAnimation) => {
+                        if (shaderAnimation.trigger === 'leave') {
+                            icon.addAnimation(shaderAnimation.type, shaderAnimation.opts)
+                        }
+                    })
                     animations.forEach((anim) => {
                         if (anim.trigger === 'leave') {
                             icon.addAnimation(anim.type, anim.opts)
@@ -92,9 +104,15 @@ class App extends Component {
                 <IconPreview icon={icon} onLoad={this.setScene} />
                 <input type="file" accept="image/svg+xml" onChange={this.loadSvg} />
                 <br/>
-                <InitialIconProps icon={icon} />
-                <ShaderAnimationControls icon={icon} />
-                <ModelAnimationControls icon={icon} />
+                {
+                    icon && (
+                        <Fragment>
+                            <InitialIconProps icon={icon} />
+                            <ShaderAnimationControls icon={icon} />
+                            <ModelAnimationControls icon={icon} />
+                        </Fragment>
+                    )
+                }
             </div>
         )
     }
@@ -102,7 +120,7 @@ class App extends Component {
 
 const mapStateToProps = state => ({
     animations: state.animations,
-    shaderAnimation: state.shaderAnimation
+    shaderAnimations: state.shaderAnimations
 })
 
 export default connect(mapStateToProps)(App)
