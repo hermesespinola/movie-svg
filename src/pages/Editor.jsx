@@ -10,8 +10,9 @@ import ShaderAnimationControls from '../components/ShaderAnimationControls'
 import Scene from '../js/Scene'
 import { unindex, reindex } from '../js/lib/utils'
 import idleAnimation from '../js/animationShaders/IdleAnimation'
+import ExportButton from '../components/ExportButton';
 
-class App extends Component {
+class Editor extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -99,20 +100,20 @@ class App extends Component {
 
     render() {
         const { icon } = this.state
-        return (
-            [
-                <IconPreview icon={icon} onLoad={this.setScene}>
-                    <input type="file" accept="image/svg+xml" onChange={this.loadSvg} />
-                    <InitialIconProps icon={icon} />
-                </IconPreview>,
-                icon && (
-                    <Fragment>
-                        <ShaderAnimationControls icon={icon} />
-                        <ModelAnimationControls icon={icon} />
-                    </Fragment>
-                ),
-            ]
-        )
+        return [
+            <IconPreview key="icon-preview" icon={icon} onLoad={this.setScene}>
+                <input type="file" accept="image/svg+xml" onChange={this.loadSvg} />
+                <br/>
+                <ExportButton />
+                <InitialIconProps icon={icon} />
+            </IconPreview>,
+            icon && (
+                <Fragment key="with-icon">
+                    <ShaderAnimationControls key="shader-animation-controls" icon={icon} />
+                    <ModelAnimationControls key="model-animation-controls" icon={icon} />
+                </Fragment>
+            ),
+        ]
     }
 }
 
@@ -121,4 +122,4 @@ const mapStateToProps = state => ({
     shaderAnimations: state.shaderAnimations
 })
 
-export default connect(mapStateToProps)(App)
+export default connect(mapStateToProps)(Editor)
