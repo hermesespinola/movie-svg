@@ -18,7 +18,8 @@ const authenticationRequired = (req, res, next) => {
 
   return oktaJwtVerifier.verifyAccessToken(accessToken)
     .then((jwt) => {
-      req.jwt = jwt;
+      const { sub: email, ...rest } = jwt.claims;
+      req.user = { email, ...rest };
       next();
     })
     .catch((err) => {
