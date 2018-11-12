@@ -1,19 +1,21 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { setShaderName, cleanShaderAnimations } from '../actions';
+import { setShaderName } from '../actions';
 
 const ShaderSelect = ({ disabled, setShaderName, name }) => (
-    <select
-        name="shader-select"
-        value={name}
-        disabled={disabled}
-        onChange={({ target: { value } }) => {
-            setShaderName(value)
-        }}
-    >
-        <option value="anim">anim</option>
-        <option value="idle">idle</option>
-    </select>
+    <div className="animationShaderSelect">
+        <select
+            name="shader-select"
+            value={name}
+            disabled={disabled}
+            onChange={({ target: { value } }) => {
+                setShaderName(value)
+            }}
+        >
+            <option value="anim">anim</option>
+            <option value="idle">idle</option>
+        </select>
+    </div>
 )
 
 const mapStateToProps = state => ({
