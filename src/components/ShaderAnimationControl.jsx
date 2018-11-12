@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { removeShaderAnimation, updateShaderAnimation } from '../actions'
 
 const ShaderAnimationControl = ({ animation, removeAnimation, updateAnimation, index, uniforms }) => {
-    const { type, opts: { target, duration, delay, ease } } = animation
+    const { trigger, type, opts: { target, duration, delay, ease } } = animation
 
     const updateAnimationOpt = (propName) => ({ target: { value } }) => {
         const newShaderAnimation = { ...animation }
@@ -18,7 +18,7 @@ const ShaderAnimationControl = ({ animation, removeAnimation, updateAnimation, i
                 Trigger:
                 <select
                     name="animation-trigger"
-                    defaultValue="click"
+                    value={trigger}
                     onChange={({ target: { value: trigger } }) => {
                         const newAnimation = { ...animation, trigger }
                         updateAnimation(index, newAnimation)

@@ -20,7 +20,6 @@ const ExportButton = ({ animation, animationId, history }) => (
         <button className="save-button" onClick={async () => {
             if (animationId) {
                 const { data } = await putAnimation(animationId, animation)
-                console.log(data)
             } else {
                 const { data } = await postAnimation(animation)
                 if (data._id) {

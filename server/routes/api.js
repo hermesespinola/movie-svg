@@ -60,7 +60,6 @@ const apiRouter = (animCollection) => {
         const { uid } = req.user;
         try {
             const result = await animCollection.insertOne({ uid, ...getAnimation(req.body) });
-            console.log(result);
             res.status(201).send({ _id: result.insertedId });
         } catch (error) {
             console.error(error.message);

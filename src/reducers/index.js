@@ -3,7 +3,7 @@ import {
     UPDATE_INITIAL_TRANSLATION, UPDATE_INITIAL_COLOR, ADD_ANIMATION, ADD_SHADER_ANIMATION,
     REMOVE_ANIMATION, REMOVE_SHADER_ANIMATION, UPDATE_ANIMATION, UPDATE_SHADER_ANIMATION,
     CLEAN_ANIMATIONS, CLEAN_SHADER_ANIMATIONS, SET_SHADER_NAME, SET_INITIAL_ANIMATION_STATE,
-    SET_ANIMATIONS, SET_SHADER_ANIMATIONS, SET_ANIMATION_NAME,
+    SET_ANIMATIONS, SET_SHADER_ANIMATIONS, SET_ANIMATION_NAME, SET_DRAW_METHOD,
 } from '../constants/actionTypes'
 import { combineReducers } from 'redux'
 
@@ -13,6 +13,10 @@ const initAnimState = {
     scale: [1, 1, 1],
     rotation: [0, 0, 0],
     uniforms: {
+        triangleScale: {
+            type: 'float',
+            value: 1.0,
+        },
         triangleScale: {
             type: 'float',
             value: 1.0,
@@ -89,17 +93,22 @@ const shaderAnimations = (state = [], action) => {
 const shaderName = (state = 'idle', action) => {
     if (action.type === SET_SHADER_NAME) {
         return action.shaderName
-    } else {
-        return state
     }
+    return state
 }
 
 const animationName = (state = 'New Animation', action) => {
     if (action.type === SET_ANIMATION_NAME) {
         return action.animationName
-    } else {
-        return state
     }
+    return state
 }
 
-export default combineReducers({ initialAnimationState, animations, shaderAnimations, shaderName, animationName })
+const drawMethod = (state='TRIANGLES', action) => {
+    if (action.type === SET_DRAW_METHOD) {
+        return action.method
+    }
+    return state
+}
+
+export default combineReducers({ initialAnimationState, animations, shaderAnimations, shaderName, animationName, drawMethod })

@@ -5,11 +5,11 @@ import {
     updateInitialTranslation, updateInitialColor,
     updateInitialRotation, updateInitialScale,
     updateInitialUniforms,
-} from '../actions';
+} from '../actions'
 import '../css/InitialIconProps.css'
 
 const rgbToHex = (val) => {
-    const hex = Number(val * 255).toString(16);
+    const hex = Number(val * 255).toString(16)
     return hex.length < 2 ? `0${hex}` : hex
 }
 
@@ -31,10 +31,10 @@ class InitialIconProps extends PureComponent {
 
     hexColor() {
         const { color } = this.props
-        var red = rgbToHex(color[0]);
-        var green = rgbToHex(color[1]);
-        var blue = rgbToHex(color[2]);
-        return `#${red}${green}${blue}`;
+        var red = rgbToHex(color[0])
+        var green = rgbToHex(color[1])
+        var blue = rgbToHex(color[2])
+        return `#${red}${green}${blue}`
     }
 
     render() {

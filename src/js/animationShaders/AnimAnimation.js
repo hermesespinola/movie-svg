@@ -30,6 +30,10 @@ export default {
             type: 'float',
             value: 1.0,
         },
+        pointSize: {
+            type: 'float',
+            value: 1.0,
+        },
         animate: {
             type: 'float',
             value: 1.0,

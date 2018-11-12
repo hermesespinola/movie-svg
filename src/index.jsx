@@ -9,11 +9,12 @@ import { Security, ImplicitCallback, SecureRoute } from '@okta/okta-react'
 import Editor from './pages/Editor'
 import Dashboard from './pages/Dashboard'
 import reducers from './reducers'
+import preloadedState from './reducers/preloadedState'
 
 const redirectUri = process.env.AUTH_CALLBACK_URL
 const issuer = `${process.env.OKTA_ORG_URL}${process.env.OKTA_ISSUER_PATH}`
 
-const store = createStore(reducers, devToolsEnhancer())
+const store = createStore(reducers, preloadedState, devToolsEnhancer())
 
 ReactDOM.render(
   <Provider store={store}>

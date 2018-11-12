@@ -10,9 +10,14 @@ export default {
                 type: 'float',
                 value: 1.0,
             },
+            pointSize: {
+                type: 'float',
+                value: 1.0,
+            },
         },
     },
     animationName: 'New Animation',
     shaderAnimations: [],
     shaderName: 'idle',
+    drawMethod: 'TRIANGLES',
 }

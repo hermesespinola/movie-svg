@@ -11,6 +11,7 @@ import Scene from '../js/Scene'
 import { unindex, reindex } from '../js/lib/utils'
 import ExportButton from '../components/ExportButton'
 import AnimationNameField from '../components/AnimationNameField'
+import DrawMethod from '../components/DrawMethod'
 import ShaderSelect from '../components/ShaderSelect'
 import LoadState from '../components/LoadState'
 import idleAnimation from '../js/animationShaders/IdleAnimation'
@@ -19,8 +20,9 @@ import { getAnimation } from '../utils/animationRequests'
 import {
     updateInitialUniforms, cleanShaderAnimations,
     setShaderName, setAnimations, setAnimationName,
-    setShaderAnimations, setInitialAnimationState
+    setShaderAnimations, setInitialAnimationState, setDrawMethod
 } from '../actions'
+import SceneObject from '../js/SceneObject'
 
 class Editor extends Component {
     constructor(props) {
@@ -46,7 +48,9 @@ class Editor extends Component {
                     this.scene.remove('icon')
                 }
 
-                this.setState({ icon: new Icon(mesh, this.getAnimationShader()) })
+                const icon = new Icon(mesh, this.getAnimationShader())
+                icon.material.type = SceneObject.type[this.props.drawMethod]
+                this.setState({ icon })
                 this.scene.add('icon', this.state.icon).start()
             }
         }
@@ -69,13 +73,14 @@ class Editor extends Component {
                 const {
                     animations, shaderAnimations,
                     initialAnimationState, name,
-                    shaderName
+                    shaderName, drawMethod,
                 } = animation
                 setAnimationName(name)
                 setShaderName(shaderName)
                 setInitialAnimationState(initialAnimationState)
                 setAnimations(animations)
                 setShaderAnimations(shaderAnimations)
+                setDrawMethod(drawMethod)
                 this.setState({ loading: false })
             })
         } else {
@@ -98,7 +103,11 @@ class Editor extends Component {
 
     componentDidUpdate(prevProps) {
         const { icon } = this.state
+        if (icon && prevProps.drawMethod !== this.props.drawMethod) {
+            icon.material.type = SceneObject.type[this.props.drawMethod]
+        }
         if (icon && prevProps.shaderName !== this.props.shaderName) {
+            console.log(icon.material.type)
             this.props.cleanShaderAnimations()
             icon.swapShader(this.getAnimationShader())
             this.props.updateInitialUniforms({ ...icon.material.uniforms })
@@ -174,6 +183,7 @@ class Editor extends Component {
             <IconPreview key="icon-preview" icon={icon} onLoad={this.createScene}>
                 <input type="file" accept="image/svg+xml" onChange={this.loadSvg} />
                 <br/>
+                <DrawMethod disabled={icon === null} />
                 <LoadState disabled={icon === null} />
                 <ShaderSelect disabled={icon === null} />
                 <ExportButton animationId={id} />
@@ -194,6 +204,7 @@ const mapStateToProps = state => ({
     animations: state.animations,
     shaderAnimations: state.shaderAnimations,
     shaderName: state.shaderName,
+    drawMethod: state.drawMethod,
 })
 
 const mapDispatchToProps = dispatch => ({

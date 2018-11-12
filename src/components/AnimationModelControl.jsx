@@ -3,8 +3,20 @@ import { connect } from 'react-redux'
 import Vector3Input from './Vector3Input'
 import { removeAnimation, updateAnimation } from '../actions';
 
+const rgbToHex = (val) => {
+    const hex = Number(val * 255).toString(16)
+    return hex.length < 2 ? `0${hex}` : hex
+}
+
+const hexColor = (color) => {
+    var red = rgbToHex(color[0])
+    var green = rgbToHex(color[1])
+    var blue = rgbToHex(color[2])
+    return `#${red}${green}${blue}`
+}
+
 const AnimationModelControl = ({ animation, removeAnimation, updateAnimation, index }) => {
-    const { type, opts: { target, duration, delay, ease } } = animation
+    const { trigger, type, opts: { target, duration, delay, ease } } = animation
 
     const updateAnimationOpt = (propName) => ({ target: { value } }) => {
         const newAnimation = { ...animation }
@@ -19,6 +31,7 @@ const AnimationModelControl = ({ animation, removeAnimation, updateAnimation, in
             targetInput = <input
                 type="color"
                 name="color-input"
+                defaultValue={hexColor(target)}
                 onChange={({ target: { value: hex } }) => {
                     const newAnimation = { ...animation }
                     const r = parseInt(hex.substring(1, 3), 16) / 255
@@ -50,7 +63,7 @@ const AnimationModelControl = ({ animation, removeAnimation, updateAnimation, in
                 Trigger:
                 <select
                     name="animation-trigger"
-                    defaultValue="click"
+                    value={trigger}
                     onChange={({ target: { value: trigger } }) => {
                         const newAnimation = { ...animation, trigger }
                         updateAnimation(index, newAnimation)
@@ -59,7 +72,6 @@ const AnimationModelControl = ({ animation, removeAnimation, updateAnimation, in
                     <option value="click">click</option>
                     <option value="enter">enter</option>
                     <option value="leave">leave</option>
-                    {/* TODO: add mousedown and mouseup */}
                 </select>
             </div>
             <div>
