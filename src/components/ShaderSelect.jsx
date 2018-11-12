@@ -4,6 +4,7 @@ import { setShaderName } from '../actions';
 
 const ShaderSelect = ({ disabled, setShaderName, name }) => (
     <div className="animationShaderSelect">
+        Animation Shader:
         <select
             name="shader-select"
             value={name}
