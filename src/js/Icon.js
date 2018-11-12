@@ -1,4 +1,4 @@
-import SceneObject from '../SceneObject';
+import SceneObject from './SceneObject';
 
 class Icon extends SceneObject {
     constructor(mesh, animationShader) {

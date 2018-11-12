@@ -13,7 +13,7 @@ const ShaderSelect = ({ disabled, setShaderName, name }) => (
                 setShaderName(value)
             }}
         >
-            <option value="anim">anim</option>
+            <option value="fly">fly</option>
             <option value="idle">idle</option>
         </select>
     </div>

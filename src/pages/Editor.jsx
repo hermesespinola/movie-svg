@@ -15,7 +15,7 @@ import DrawMethod from '../components/DrawMethod'
 import ShaderSelect from '../components/ShaderSelect'
 import LoadState from '../components/LoadState'
 import idleAnimation from '../js/animationShaders/IdleAnimation'
-import animAnimation from '../js/animationShaders/AnimAnimation'
+import flyAnimation from '../js/animationShaders/AnimAnimation'
 import { getAnimation } from '../utils/animationRequests'
 import {
     updateInitialUniforms, cleanShaderAnimations,
@@ -93,8 +93,8 @@ class Editor extends Component {
             case 'idle':
                 return idleAnimation
                 break
-            case 'anim':
-                return animAnimation
+            case 'fly':
+                return flyAnimation
                 break
             default:
                 return idleAnimation
