@@ -40,7 +40,7 @@ MongoClient.connect(process.env.MONGO_URI, { useNewUrlParser: true }, (err, clie
   const animCollection = db.collection('animations');
   app.use('/api', authenticationRequired, apiRouter(animCollection));
 
-  app.listen(process.env.PORT, () => {
+  app.listen(process.env.PORT || 8080, () => {
       console.log(`Server listening on port ${process.env.PORT}`);
   });
 })
