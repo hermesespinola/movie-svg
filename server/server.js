@@ -31,6 +31,8 @@ app.get(['/', '/implicit/callback', /\/editor|\/editor\/*/], (_, res) => {
   res.sendFile(path.resolve(__dirname, '../public', 'index.html'));
 });
 
+console.log('mongo uri', process.env.MONGO_URI);
+console.log('app port', process.env.PORT);
 MongoClient.connect(process.env.MONGO_URI, { useNewUrlParser: true }, (err, client) => {
   if (err) return console.log(err);
 
