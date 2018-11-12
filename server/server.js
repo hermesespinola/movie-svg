@@ -32,7 +32,7 @@ app.get(['/', '/implicit/callback', /\/editor|\/editor\/*/], (_, res) => {
 });
 
 console.log('mongo uri', process.env.MONGO_URI);
-console.log('app port', process.env.PORT);
+console.log('app port', process.env.APP_PORT);
 MongoClient.connect(process.env.MONGO_URI, { useNewUrlParser: true }, (err, client) => {
   if (err) return console.log(err);
 
@@ -40,7 +40,7 @@ MongoClient.connect(process.env.MONGO_URI, { useNewUrlParser: true }, (err, clie
   const animCollection = db.collection('animations');
   app.use('/api', authenticationRequired, apiRouter(animCollection));
 
-  app.listen(process.env.PORT || 8080, () => {
-      console.log(`Server listening on port ${process.env.PORT}`);
+  app.listen(process.env.APP_PORT || 8080, () => {
+      console.log(`Server listening on port ${process.env.APP_PORT}`);
   });
 })
