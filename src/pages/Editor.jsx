@@ -10,37 +10,76 @@ import ShaderAnimationControls from '../components/ShaderAnimationControls'
 import Scene from '../js/Scene'
 import { unindex, reindex } from '../js/lib/utils'
 import ExportButton from '../components/ExportButton'
+import AnimationNameField from '../components/AnimationNameField'
 import ShaderSelect from '../components/ShaderSelect'
 import LoadState from '../components/LoadState'
 import idleAnimation from '../js/animationShaders/IdleAnimation'
 import animAnimation from '../js/animationShaders/AnimAnimation'
-import { updateInitialUniforms, cleanShaderAnimations } from '../actions'
+import { getAnimation } from '../utils/animationRequests'
+import {
+    updateInitialUniforms, cleanShaderAnimations,
+    setShaderName, setAnimations, setAnimationName,
+    setShaderAnimations, setInitialAnimationState
+} from '../actions'
 
 class Editor extends Component {
     constructor(props) {
         super(props)
         this.state = {
             icon: null,
+            loading: true,
         }
-        this.scene = null
         this.reader = new FileReader()
         this.reader.onload = ({ target: { result: svg } }) => {
-            // extract and parse svg path
-            const path = extract(svg)
-    
-            // create mesh object
-            let mesh = svgMesh(path, {
-                scale: 10,
-                simplify: 0.1,
-            })
-            const triangles = unindex(mesh)
-            mesh = reindex(triangles)
-            if (this.state.icon) {
-                this.scene.remove('icon')
-            }
+            if (this.scene) {
+                // extract and parse svg path
+                const path = extract(svg)
+        
+                // create mesh object
+                let mesh = svgMesh(path, {
+                    scale: 10,
+                    simplify: 0.1,
+                })
+                const triangles = unindex(mesh)
+                mesh = reindex(triangles)
+                if (this.state.icon) {
+                    this.scene.remove('icon')
+                }
 
-            this.setState({ icon: new Icon(mesh, this.getAnimationShader()) })
-            this.scene.add('icon', this.state.icon).start()
+                this.setState({ icon: new Icon(mesh, this.getAnimationShader()) })
+                this.scene.add('icon', this.state.icon).start()
+            }
+        }
+    }
+
+    componentWillUnmount() {
+        this.scene.stop()
+        this.createScene = () => {}
+    }
+
+    componentDidMount() {
+        const { match: { params: { id } } } = this.props
+        if (id) {
+            getAnimation(id).then(({ data: animation }) => {
+                const {
+                    setAnimations, setShaderAnimations,
+                    setInitialAnimationState, setShaderName,
+                    setAnimationName,
+                } = this.props
+                const {
+                    animations, shaderAnimations,
+                    initialAnimationState, name,
+                    shaderName
+                } = animation
+                setAnimationName(name)
+                setShaderName(shaderName)
+                setInitialAnimationState(initialAnimationState)
+                setAnimations(animations)
+                setShaderAnimations(shaderAnimations)
+                this.setState({ loading: false })
+            })
+        } else {
+            this.setState({ loading: false })
         }
     }
 
@@ -58,10 +97,11 @@ class Editor extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.shaderName !== this.props.shaderName) {
-            cleanShaderAnimations()
-            this.state.icon.swapShader(this.getAnimationShader())
-            this.props.updateInitialUniforms({ ...this.state.icon.material.uniforms })
+        const { icon } = this.state
+        if (icon && prevProps.shaderName !== this.props.shaderName) {
+            this.props.cleanShaderAnimations()
+            icon.swapShader(this.getAnimationShader())
+            this.props.updateInitialUniforms({ ...icon.material.uniforms })
         }
     }
 
@@ -71,7 +111,10 @@ class Editor extends Component {
         }
     }
 
-    setScene = (canvasRef) => {
+    createScene = (canvasRef) => {
+        if (!canvasRef) {
+            return
+        }
         this.scene = new Scene(canvasRef, [0, 0, 0, 1.], {
             click: () => {
                 const { icon } = this.state
@@ -125,14 +168,16 @@ class Editor extends Component {
     }
 
     render() {
-        const { icon } = this.state
-        return [
-            <IconPreview key="icon-preview" icon={icon} onLoad={this.setScene}>
+        const { icon, loading } = this.state
+        const { match: { params: { id } } } = this.props
+        return loading ? <div className="loading">Loading...</div> : [
+            <IconPreview key="icon-preview" icon={icon} onLoad={this.createScene}>
                 <input type="file" accept="image/svg+xml" onChange={this.loadSvg} />
                 <br/>
                 <LoadState disabled={icon === null} />
                 <ShaderSelect disabled={icon === null} />
-                <ExportButton />
+                <ExportButton animationId={id} />
+                <AnimationNameField />
                 <InitialIconProps icon={icon} />
             </IconPreview>,
             icon && (
@@ -154,6 +199,11 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     updateInitialUniforms: uniforms => dispatch(updateInitialUniforms(uniforms)),
     cleanShaderAnimations: () => dispatch(cleanShaderAnimations()),
+    setShaderName: name => dispatch(setShaderName(name)),
+    setAnimations: animations => dispatch(setAnimations(animations)),
+    setShaderAnimations: shaderAnimations => dispatch(setShaderAnimations(shaderAnimations)),
+    setInitialAnimationState: initState => dispatch(setInitialAnimationState(initState)),
+    setAnimationName: name => dispatch(setAnimationName(name)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Editor)

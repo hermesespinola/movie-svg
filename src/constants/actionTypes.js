@@ -1,6 +1,7 @@
 /** Wipe all uniform state (initial uniforms and shaderAnimations) */
 export const CHANGE_SHADER = 'CHANGE_SHADER'
 export const SET_SHADER_NAME = 'SET_SHADER_NAME'
+export const SET_ANIMATION_NAME = 'SET_ANIMATION_NAME'
 
 // Initial state
 export const SET_INITIAL_ANIMATION_STATE = 'SET_INITIAL_ANIMATION_STATE'

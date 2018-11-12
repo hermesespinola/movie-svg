@@ -12,6 +12,7 @@ export default {
             },
         },
     },
+    animationName: 'New Animation',
     shaderAnimations: [],
     shaderName: 'idle',
 }

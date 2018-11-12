@@ -134,7 +134,7 @@ class SceneObject {
      * Only meant to be called when this object is detached from the scene
      */
 	remove() {
-		this.gl.deleteBuffer(this.positionBuffer)
+        this.gl.deleteBuffer(this.positionBuffer)
         this.gl.deleteShader(this.vertexShader)
         this.gl.deleteShader(this.fragmentShader)
         this.gl.deleteProgram(this.shaderProgram)

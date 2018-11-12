@@ -19,6 +19,10 @@ export default {
                 type: 'vec3',
                 value: centroids,
             },
+            direction: {
+                type: 'vec3',
+                value: directions,
+            }
         }
     },
     uniforms: {

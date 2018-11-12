@@ -3,7 +3,9 @@ const { ObjectId } = require('mongodb');
 
 const validUniforms = ['triangleScale', 'animate'];
 const filterUniforms = (uniforms) => Object.keys(uniforms).reduce(
-    (acc, name) => validUniforms.includes(name) ? {[name]: uniforms[name], ...acc} : acc,
+    (acc, name) => validUniforms.includes(name) ?
+        {[name]: uniforms[name], ...acc} :
+        acc,
     {},
 );
 
@@ -16,7 +18,8 @@ const apiRouter = (animCollection) => {
     router.get('/animations', async (req, res) => {
         try {
             const { uid } = req.user;
-            const animations = await animCollection.find({ uid }).toArray();
+            const animations = await animCollection.find({ uid })
+                .project({ _id: true, name: true }).toArray();
             res.send(animations || []);
         } catch (error) {
             console.error(error.message);
@@ -24,32 +27,10 @@ const apiRouter = (animCollection) => {
         }
     });
 
-    router.post('/animations', async (req, res) => {
-        const { uid } = req.user;
-        try {
-            const {
-                initialAnimationState: { color, translation, scale, rotation, uniforms },
-                animations, shaderAnimations, shaderName, name,
-            } = req.body;
-            const result = await animCollection.insertOne({
-                initialAnimationState: { color, translation, scale, rotation, uniforms },
-                shaderAnimations,
-                animations,
-                shaderName,
-                uid,
-                name,
-            });
-            res.status(201).send({ id: result.insertedId.str });
-        } catch (error) {
-            console.error(error.message);
-            res.sendStatus(500);
-        }
-    });
-
     router.get('/animations/:id', async (req, res) => {
         try {
             const oid = ObjectId(req.params.id);
-            const animation = await animCollection.findOne(oid);
+            const animation = await animCollection.findOne({ _id: oid });
             if (!animation || animation.uid !== req.user.uid) {
                 return res.sendStatus(404);
             }
@@ -60,27 +41,56 @@ const apiRouter = (animCollection) => {
         }
     });
 
-    router.put('animations/:id', async (req, res) => {
+    const getAnimation = (body) => {
+        const {
+            initialAnimationState: { color, translation, scale, rotation, uniforms },
+            animations, shaderAnimations,
+            shaderName, animationName,
+        } = body;
+        return {
+            initialAnimationState: { color, translation, scale, rotation, uniforms },
+            name: animationName,
+            shaderAnimations,
+            animations,
+            shaderName,
+        };
+    }
+
+    router.post('/animations', async (req, res) => {
+        const { uid } = req.user;
         try {
-            const oid = ObjectId(req.params.id);
-            const animation = await animCollection.findOne(oid);
-            if (!animation || animation.uid !== req.user.uid) {
-                return res.sendStatus(404);
-            }
+            const result = await animCollection.insertOne({ uid, ...getAnimation(req.body) });
+            console.log(result);
+            res.status(201).send({ _id: result.insertedId });
         } catch (error) {
             console.error(error.message);
-            res.send(500);
+            res.sendStatus(500);
         }
     });
 
-    router.delete('animations/:id', async (req, res) => {
+    router.put('/animations/:id', async (req, res) => {
         try {
             const oid = ObjectId(req.params.id);
-            const animation = await animCollection.findOne(oid);
+            const animation = await animCollection.findOne({ _id: oid });
             if (!animation || animation.uid !== req.user.uid) {
                 return res.sendStatus(404);
             }
-            await animCollection.deleteOne(oid);
+            await animCollection.updateOne({ _id: oid }, { $set: getAnimation(req.body) })
+            res.sendStatus(204);
+        } catch (error) {
+            console.error(error.message);
+            res.sendStatus(500);
+        }
+    });
+
+    router.delete('/animations/:id', async (req, res) => {
+        try {
+            const oid = ObjectId(req.params.id);
+            const animation = await animCollection.findOne({ _id: oid });
+            if (!animation || animation.uid !== req.user.uid) {
+                return res.sendStatus(404);
+            }
+            await animCollection.deleteOne({ _id: oid });
             res.sendStatus(204);
         } catch (error) {
             console.error(error.message);

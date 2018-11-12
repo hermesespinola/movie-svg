@@ -16,11 +16,11 @@ const ShaderSelect = ({ disabled, setShaderName, name }) => (
     </select>
 )
 
-export const mapStateToProps = state => ({
+const mapStateToProps = state => ({
     name: state.shaderName,
 })
 
-export const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = dispatch => ({
     setShaderName: name => dispatch(setShaderName(name)),
 })
 

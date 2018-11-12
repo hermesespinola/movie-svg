@@ -1,10 +1,9 @@
 import {
     UPDATE_INITIAL_ROTATION, UPDATE_INITIAL_SCALE, UPDATE_INITIAL_UNIFORMS,
-    UPDATE_INITIAL_TRANSLATION, UPDATE_INITIAL_COLOR,
-    ADD_ANIMATION, ADD_SHADER_ANIMATION,
-    REMOVE_ANIMATION, REMOVE_SHADER_ANIMATION,
-    UPDATE_ANIMATION, UPDATE_SHADER_ANIMATION,
-    CLEAN_ANIMATIONS, CLEAN_SHADER_ANIMATIONS, SET_SHADER_NAME, SET_INITIAL_ANIMATION_STATE, SET_ANIMATIONS, SET_SHADER_ANIMATIONS,
+    UPDATE_INITIAL_TRANSLATION, UPDATE_INITIAL_COLOR, ADD_ANIMATION, ADD_SHADER_ANIMATION,
+    REMOVE_ANIMATION, REMOVE_SHADER_ANIMATION, UPDATE_ANIMATION, UPDATE_SHADER_ANIMATION,
+    CLEAN_ANIMATIONS, CLEAN_SHADER_ANIMATIONS, SET_SHADER_NAME, SET_INITIAL_ANIMATION_STATE,
+    SET_ANIMATIONS, SET_SHADER_ANIMATIONS, SET_ANIMATION_NAME,
 } from '../constants/actionTypes'
 import { combineReducers } from 'redux'
 
@@ -95,4 +94,12 @@ const shaderName = (state = 'idle', action) => {
     }
 }
 
-export default combineReducers({ initialAnimationState, animations, shaderAnimations, shaderName })
+const animationName = (state = 'New Animation', action) => {
+    if (action.type === SET_ANIMATION_NAME) {
+        return action.animationName
+    } else {
+        return state
+    }
+}
+
+export default combineReducers({ initialAnimationState, animations, shaderAnimations, shaderName, animationName })

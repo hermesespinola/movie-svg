@@ -26,10 +26,7 @@ app.use(middleware(compiler));
 // serve static application
 app.use(express.static(path.join(__dirname, '../public')));
 
-app.get('/', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../public', 'index.html'));
-});
-app.get('/implicit/callback', (req, res) => {
+app.get(['/', '/implicit/callback', /\/editor|\/editor\/*/], (_, res) => {
   res.sendFile(path.resolve(__dirname, '../public', 'index.html'));
 });
 
