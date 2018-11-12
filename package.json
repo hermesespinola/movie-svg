@@ -3,9 +3,9 @@
   "version": "0.0.1",
   "description": "a small webpack project for creating WebGL applications.",
   "scripts": {
-    "build": "NODE_ENV=production webpack -p --progress --colors --config build/webpack.prod.config.js",
+    "build": "webpack -p --progress --colors --config build/webpack.prod.config.js",
     "watch": "webpack --progress --colors --watch",
-    "start": "node server/server.js",
+    "start": "NODE_ENV=production node server/server.js",
     "dev": "webpack --config build/webpack.dev.config.js && node server/server.js"
   },
   "author": "Hermes Espínola <hermes.espinola@gmail.com>",

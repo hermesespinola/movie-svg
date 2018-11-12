@@ -10,7 +10,8 @@ const path = require('path');
 const cors = require('cors');
 const authenticationRequired = require('./utils/authenticationRequired');
 
-const webpackOptions = require('../build/webpack.dev.config');
+const webpackVersion = process.env.NODE_ENV === 'production' ? 'prod' : 'dev';
+const webpackOptions = require(`../build/webpack.${webpackVersion}.config`);
 const compiler = webpack(webpackOptions);
 
 const MongoClient = require('mongodb').MongoClient
