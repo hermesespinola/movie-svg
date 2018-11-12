@@ -13,6 +13,7 @@ import preloadedState from './reducers/preloadedState'
 
 const redirectUri = process.env.AUTH_CALLBACK_URL
 const issuer = `${process.env.OKTA_ORG_URL}${process.env.OKTA_ISSUER_PATH}`
+console.log('okta issuer:', issuer)
 
 const store = createStore(reducers, preloadedState, devToolsEnhancer())
 
