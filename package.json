@@ -16,7 +16,7 @@
     "@okta/okta-react": "^1.1.4",
     "abs-svg-path": "^0.1.1",
     "adaptive-bezier-curve": "^1.0.3",
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "babel-preset-react": "^6.24.1",
     "bezier-easing": "^2.1.0",
     "cdt2d": "^1.0.0",
